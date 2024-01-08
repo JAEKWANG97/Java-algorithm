@@ -15,29 +15,56 @@ public class P2001 {
                     arr[j][k] = scanner.nextInt();
                 }
             }
-
-        }
-    }
-
-    private static int killFly(int[][] arr, int n, int m) {
-        int max_kill = Integer.MIN_VALUE;
-
-        for (int i = 0; i < n; i++) {
+            int max_total = 0;
             for (int j = 0; j < n; j++) {
-                int cur = arr[i][j];
-                try {
-                    for (int l = 1; l < n; l++) {
-                        cur += arr[i + n][j];
-                        cur += arr[i - n][j];
-                        cur += arr[i][j - n];
-                        cur += arr[i][j + n];
-                    }
-                } catch (Exception e) {
-                    cur += 0;
+                for (int k = 0; k < n; k++) {
+                    max_total = Math.max(max_total, Math.max(spray_cross(arr, j, k, m), spray_plus(arr, j, k, m)));
                 }
             }
+            System.out.println("#" + i + " " + max_total);
+
         }
-        return max_kill;
+        scanner.close();
+    }
+
+    private static int spray_cross(int[][] arr, int row, int col, int m) {
+        int total = arr[row][col];  // 중심점 한 번만 계산
+        for (int i = 1; i < m; i++) {  // 중심점을 제외하고 계산
+            // 범위 체크 및 계산
+            if (row - i >= 0 && col - i >= 0) {
+                total += arr[row - i][col - i];
+            }
+            if (row - i >= 0 && col + i < arr[0].length) {
+                total += arr[row - i][col + i];
+            }
+            if (row + i < arr.length && col - i >= 0) {
+                total += arr[row + i][col - i];
+            }
+            if (row + i < arr.length && col + i < arr[0].length) {
+                total += arr[row + i][col + i];
+            }
+        }
+        return total;
+    }
+
+    private static int spray_plus(int[][] arr, int row, int col, int m) {
+        int total = arr[row][col];  // 중심점 한 번만 계산
+        for (int i = 1; i < m; i++) {  // 중심점을 제외하고 계산
+            // 범위 체크 및 계산
+            if (row - i >= 0) {
+                total += arr[row - i][col];
+            }
+            if (row + i < arr.length) {
+                total += arr[row + i][col];
+            }
+            if (col - i >= 0) {
+                total += arr[row][col - i];
+            }
+            if (col + i < arr[0].length) {
+                total += arr[row][col + i];
+            }
+        }
+        return total;
     }
 
 }
