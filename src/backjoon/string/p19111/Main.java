@@ -1,4 +1,4 @@
-package backjoon.p19111;
+package backjoon.string.p19111;
 
 import java.io.BufferedReader;
 import java.io.IOException;

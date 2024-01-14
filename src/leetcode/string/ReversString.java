@@ -1,4 +1,4 @@
-package leetcode;
+package leetcode.string;
 
 import java.lang.reflect.Array;
 import java.util.LinkedList;

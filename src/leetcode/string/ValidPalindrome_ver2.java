@@ -1,4 +1,4 @@
-package leetcode;
+package leetcode.string;
 
 //문자 단위로 추출
 public class ValidPalindrome_ver2 {

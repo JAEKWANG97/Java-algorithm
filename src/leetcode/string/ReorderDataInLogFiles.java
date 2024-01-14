@@ -1,4 +1,4 @@
-package leetcode;
+package leetcode.string;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -26,18 +26,17 @@ public class ReorderDataInLogFiles {
                 String[] s1x = s1.split(" ", 2);
                 String[] s2x = s2.split(" ",2);
 
-
-                return 0;
+                int compared = s1x[1].compareTo(s2x[1]);
+                if(compared == 0){
+                    return s1x[0].compareTo(s2x[0]);
+                }
+                return compared;
             }
         });
         Collections.sort(digitList);
 
-        for (String s : letterList) {
-            System.out.print(s +" ");
-        }
-        for (String s : digitList) {
-            System.out.print(s +" ");
-        }
+        letterList.addAll(digitList);
+
 
 
     }
