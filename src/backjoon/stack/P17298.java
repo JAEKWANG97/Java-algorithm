@@ -13,15 +13,38 @@ public class P17298 {
 
         int n = Integer.parseInt(br.readLine());
 
+        int[] arr = new int[n];
         Stack<Integer> stack = new Stack<>();
+        int[] answer = new int[n];
 
         st = new StringTokenizer(br.readLine());
         int max = Integer.MIN_VALUE;
+        int i = 0;
         while (st.hasMoreTokens()) {
             int item = Integer.parseInt(st.nextToken());
-            stack.push(item);
+            arr[i] = (item);
+            i += 1;
         }
 
-        
+        for (int j = 0; j < n; j++) {
+            while (!(stack.empty()) && arr[stack.peek()] < arr[j]) {
+                answer[stack.pop()] = arr[j];
+            }
+
+            stack.push(j);
+
+        }
+
+        while (!stack.empty()) {
+            answer[stack.pop()] = -1;
+        }
+
+        StringBuilder sb = new StringBuilder();
+        for (int ans : answer) {
+            sb.append(ans).append(' ');
+        }
+        System.out.println(sb.toString().trim());
+
+
     }
 }
