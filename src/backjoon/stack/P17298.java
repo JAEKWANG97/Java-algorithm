@@ -29,7 +29,10 @@ public class P17298 {
         for (int j = 0; j < n; j++) {
             while (!(stack.empty()) && arr[stack.peek()] < arr[j]) {
                 answer[stack.pop()] = arr[j];
+
+
             }
+
 
             stack.push(j);
 
