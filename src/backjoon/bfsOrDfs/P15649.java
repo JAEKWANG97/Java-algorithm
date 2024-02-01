@@ -6,42 +6,46 @@ import java.io.InputStreamReader;
 import java.util.StringTokenizer;
 
 public class P15649 {
-    static int[] arr;
-    static boolean[] visited;
-    static StringBuilder sb = new StringBuilder();
 
+    static int n;
+    static int m;
+
+    static BufferedReader br;
+    static StringTokenizer st;
+
+    static StringBuilder sb;
     public static void main(String[] args) throws IOException {
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        StringTokenizer st = new StringTokenizer(br.readLine());
+        br = new BufferedReader(new InputStreamReader(System.in));
+        st = new StringTokenizer(br.readLine());
 
-        int N = Integer.parseInt(st.nextToken());
-        int M = Integer.parseInt(st.nextToken());
+        n = Integer.parseInt(st.nextToken());
+        m = Integer.parseInt(st.nextToken());
 
-        arr = new int[M];
-        visited = new boolean[N + 1];
+        int[] arr = new int[m];
+        int count = 0;
+        boolean[] visited = new boolean[n + 1];
+        recursiveComb(count, arr, visited);
 
-        backtracking(0, N, M);
-        System.out.println(sb);
     }
 
-    public static void backtracking(int depth, int N, int M) {
-        if (depth == M) {
-            for (int num : arr) {
-                sb.append(num).append(" ");
+    static void recursiveComb(int count, int[] arr, boolean[] visited) {
+        sb = new StringBuilder();
+        if (count == m) {
+            for (int i = 0; i < m; i++) {
+                sb.append(arr[i]).append(" ");
             }
-            sb.append("\n");
+            System.out.println(sb.toString());
             return;
         }
-
-        for (int i = 1; i <= N; i++) {
+        for (int i = 1; i < n + 1; i++) {
             if (!visited[i]) {
+                arr[count] = i;
                 visited[i] = true;
-                arr[depth] = i;
-                backtracking(depth + 1, N, M);
+                recursiveComb(count + 1, arr, visited);
                 visited[i] = false;
             }
         }
-
     }
+
 
 }
