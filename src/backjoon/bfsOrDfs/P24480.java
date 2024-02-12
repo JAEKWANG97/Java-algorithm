@@ -61,7 +61,7 @@ public class P24480 {
                     int next = neighbors.poll();
                     if (!visited[next]) {
                         visited[next] = true;
-                        stack.push(cur);
+                        stack.push(cur); 
                         stack.push(next);
                         visitOrder[next] = order++;
                         break;
