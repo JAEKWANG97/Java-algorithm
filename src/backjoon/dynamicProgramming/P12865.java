@@ -36,7 +36,8 @@ public class P12865 {
                 if (arr[i - 1][0] <= j) {
                     // i번째 물건을 포함시키는 경우와 포함시키지 않는 경우 중 최대값 선택
                     dp[i][j] = Math.max(arr[i - 1][1] + dp[i - 1][j - arr[i - 1][0]], dp[i - 1][j]);
-                } else {
+                }
+                else {
                     dp[i][j] = dp[i - 1][j];
                 }
             }
