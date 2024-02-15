@@ -17,12 +17,13 @@ public class P1873 {
     static int[] tankXY; // 전차좌표
     static char[] tankVector = new char[]{'<', '^', '>', 'v'};
 
-    static char curTankVector; // 현재 전차 방향
-
     public static void main(String[] args) throws IOException {
         T = Integer.parseInt(br.readLine());
         for (int tc = 1; tc <= T; tc++) {
             initVariables();
+            simulateGame(0);
+            System.out.print("#" + tc + " ");
+            printMap();
         }
     }
 
@@ -85,6 +86,7 @@ public class P1873 {
         if (isIn(tankXY[0] - 1, tankXY[1]) && map[tankXY[0] - 1][tankXY[1]] == '.') {
             map[tankXY[0]][tankXY[1]] = '.';
             map[tankXY[0] - 1][tankXY[1]] = '^';
+            tankXY[0] -= 1;
         }
     }
 
@@ -93,6 +95,7 @@ public class P1873 {
         if (isIn(tankXY[0] + 1, tankXY[1]) && map[tankXY[0] + 1][tankXY[1]] == '.') {
             map[tankXY[0]][tankXY[1]] = '.';
             map[tankXY[0] + 1][tankXY[1]] = 'v';
+            tankXY[0] += 1;
         }
     }
 
@@ -101,6 +104,7 @@ public class P1873 {
         if (isIn(tankXY[0], tankXY[1] - 1) && map[tankXY[0]][tankXY[1] - 1] == '.') {
             map[tankXY[0]][tankXY[1]] = '.';
             map[tankXY[0]][tankXY[1] - 1] = '<';
+            tankXY[1] -= 1;
         }
     }
 
@@ -109,6 +113,7 @@ public class P1873 {
         if (isIn(tankXY[0], tankXY[1] + 1) && map[tankXY[0]][tankXY[1] + 1] == '.') {
             map[tankXY[0]][tankXY[1]] = '.';
             map[tankXY[0]][tankXY[1] + 1] = '>';
+            tankXY[1] += 1;
         }
     }
 
@@ -116,8 +121,8 @@ public class P1873 {
         if (map[tankXY[0]][tankXY[1]] == '^') {
             shoot(tankXY[0], tankXY[1], '^');
         }
-        if (map[tankXY[0]][tankXY[1]] == 'V') {
-            shoot(tankXY[0], tankXY[1], 'V');
+        if (map[tankXY[0]][tankXY[1]] == 'v') {
+            shoot(tankXY[0], tankXY[1], 'v');
         }
         if (map[tankXY[0]][tankXY[1]] == '<') {
             shoot(tankXY[0], tankXY[1], '<');
@@ -184,12 +189,14 @@ public class P1873 {
     static boolean isIn(int x, int y) {
         return (x >= 0 && x < H && y >= 0 && y < W);
     }
-    /*
-    U	Up : 전차가 바라보는 방향을 위쪽으로 바꾸고, 한 칸 위의 칸이 평지라면 위 그 칸으로 이동한다.
-    D	Down : 전차가 바라보는 방향을 아래쪽으로 바꾸고, 한 칸 아래의 칸이 평지라면 그 칸으로 이동한다.
-    L	Left : 전차가 바라보는 방향을 왼쪽으로 바꾸고, 한 칸 왼쪽의 칸이 평지라면 그 칸으로 이동한다.
-    R	Right : 전차가 바라보는 방향을 오른쪽으로 바꾸고, 한 칸 오른쪽의 칸이 평지라면 그 칸으로 이동한다.
-    S	Shoot : 전차가 현재 바라보고 있는 방향으로 포탄을 발사한다.
-     */
+
+    static void printMap() {
+        for (int i = 0; i < H; i++) {
+            for (int j = 0; j < W; j++) {
+                System.out.print(map[i][j]);
+            }
+            System.out.println();
+        }
+    }
 
 }
