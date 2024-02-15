@@ -3,8 +3,6 @@ package backjoon.divideAndConquer;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.Arrays;
-import java.util.StringTokenizer;
 
 public class P1992 {
     static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -24,28 +22,36 @@ public class P1992 {
             }
         }
 
-        for (int i = 0; i < N; i++) {
-            System.out.println(Arrays.toString(arr[i]));
-        }
-
         compression(0, 0, N);
+        System.out.println(sb.toString());
     }
 
-    static void compression(int x, int y, int n) {
-        sb.append("(");
-        int flag = 0;
-        for (int i = 0; i < n; i++) {
-            for (int j = 0; j < n; j++) {
-                if (i == 0 && j == 0) {
-                    flag = arr[i][j];
-                }
+    static void compression(int x, int y, int size) {
+        if (isUniform(x, y, size)) {
+            sb.append(arr[x][y]);
+        } else {
+            sb.append("(");
+            int newSize = size / 2;
 
-                if (arr[i][j] != flag) {
-                    compression(i, j, n / 2);
+            for (int i = 0; i < 2; i++) {
+                for (int j = 0; j < 2; j++) {
+                    compression(x + i * newSize, y + j * newSize, newSize);
                 }
+            }
+            sb.append(")");
+        }
+    }
 
+    static boolean isUniform(int x, int y, int size) {
+        char firstValue = arr[x][y];
+        for (int i = x; i < x + size; i++) {
+            for (int j = y; j < y + size; j++) {
+                if (arr[i][j] != firstValue) {
+                    return false;
+                }
             }
         }
-        sb.append(")");
+        return true;
     }
+
 }
