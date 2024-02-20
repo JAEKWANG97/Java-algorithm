@@ -3,39 +3,40 @@ package backjoon.backtracking;
 import java.io.*;
 import java.util.*;
 
-class Chicken {
-    int x;
-    int y;
-
-    public Chicken(int x, int y) {
-        this.x = x;
-        this.y = y;
-    }
-
-    @Override
-    public String toString() {
-        return "Chicken{" +
-                "x=" + x +
-                ", y=" + y +
-                '}';
-    }
-}
-
-class Home {
-    int x;
-    int y;
-
-    public Home(int x, int y) {
-        this.x = x;
-        this.y = y;
-    }
-
-    public int calDistance(int x, int y) {
-        return Math.abs(this.x - x) + Math.abs(this.y - y);
-    }
-}
 
 public class P15686 {
+    static class Chicken {
+        int x;
+        int y;
+
+        public Chicken(int x, int y) {
+            this.x = x;
+            this.y = y;
+        }
+
+        @Override
+        public String toString() {
+            return "Chicken{" +
+                    "x=" + x +
+                    ", y=" + y +
+                    '}';
+        }
+    }
+
+    static class Home {
+        int x;
+        int y;
+
+        public Home(int x, int y) {
+            this.x = x;
+            this.y = y;
+        }
+
+        public int calDistance(int x, int y) {
+            return Math.abs(this.x - x) + Math.abs(this.y - y);
+        }
+    }
+
 
     static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
     static StringTokenizer st;
@@ -83,8 +84,6 @@ public class P15686 {
     private static void combination(int start, int cnt, Chicken[] chickens) {
         if (cnt == M) {
             // 2. 구해진 조합으로 각 집마다 최소 거리인 지점 찾기
-
-
             int curTotalDistance = 0;
             for (Home home : homeList) {
                 int minDistance = Integer.MAX_VALUE;
@@ -94,6 +93,9 @@ public class P15686 {
                 }
 
                 curTotalDistance += minDistance;
+                if (curTotalDistance > minTotalDistance) {
+                    return;
+                }
             }
 
             minTotalDistance = Math.min(minTotalDistance, curTotalDistance);
