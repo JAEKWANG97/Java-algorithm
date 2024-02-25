@@ -76,10 +76,13 @@ public class P5653 {
                             Cell newCell = new Cell(nx, ny, cell.lifeTime, cell.lifeTime, 0);
                             map.put(nx + "," + ny, newCell);
                             newCells.add(newCell);
+                        } else if (map.get(nx + "," + ny).lifeTime < cell.lifeTime) {
+                            Cell newCell = new Cell(nx, ny, cell.lifeTime, cell.lifeTime, 0);
+                            map.put(nx + "," + ny, newCell);
+                            newCells.add(newCell);
                         }
                     }
                 }
-
                 if (--cell.activeTime == 0) {
                     if (cell.state == 0) { // 비활성 -> 활성
                         cell.state = 1;
@@ -92,8 +95,10 @@ public class P5653 {
                     newCells.add(cell); // 살아있는 세포 다시 큐에 추가
                 }
             }
+
             queue.addAll(newCells);
             time++;
         }
     }
+
 }
