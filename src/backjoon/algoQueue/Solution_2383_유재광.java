@@ -1,113 +1,171 @@
+package backjoon.algoQueue;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
-import java.util.Scanner;
+import java.util.StringTokenizer;
 
-class Solution {
-    static class Person {
-        int r, c; // 사람의 위치
+public class Solution_2383_유재광 {
 
-        Person(int r, int c) {
-            this.r = r;
-            this.c = c;
+
+    static class Person implements Comparable<Person> {
+        int row, col, time;
+        int stair; //1번 계단, 2번 계단
+
+        public Person(int row, int col) {
+            this.row = row;
+            this.col = col;
         }
+
+        @Override
+        public int compareTo(Person o) {
+            // TODO Auto-generated method stub
+            return this.time - o.time;
+        }
+
+        @Override
+        public String toString() {
+            return "Person [row=" + row + ", col=" + col + ", time=" + time + ", stair=" + stair + "]" + "\n";
+        }
+
     }
 
     static class Stair {
-        int r, c, length; // 계단의 위치 및 길이
+        int row, col, time;
 
-        Stair(int r, int c, int length) {
-            this.r = r;
-            this.c = c;
-            this.length = length;
+        public Stair(int row, int col, int time) {
+            this.row = row;
+            this.col = col;
+            this.time = time;
         }
+
+        @Override
+        public String toString() {
+            return "Stair [row=" + row + ", col=" + col + ", time=" + time + "]";
+        }
+
     }
 
-    public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-        int T = sc.nextInt(); // 테스트 케이스의 수
+    static int N;
+    static int min = Integer.MAX_VALUE;
+    static Stair[] stairs;
+    static List<Person> people;
+    static List<Person> offStair1;
+    static List<Person> offStair2;
+    static boolean[] caseCheck;
 
-        for (int tc = 1; tc <= T; tc++) {
-            int N = sc.nextInt(); // 방의 크기
-            List<Person> people = new ArrayList<>();
-            List<Stair> stairs = new ArrayList<>();
-
-            // 지도 정보 입력 및 사람, 계단 위치 파악
-            for (int i = 0; i < N; i++) {
-                for (int j = 0; j < N; j++) {
-                    int input = sc.nextInt();
-                    if (input == 1) {
-                        people.add(new Person(i, j)); // 사람 위치 추가
-                    } else if (input > 1) {
-                        stairs.add(new Stair(i, j, input)); // 계단 정보 추가
+    public static void main(String[] args) throws NumberFormatException, IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st = null;
+        StringBuilder sb = new StringBuilder();
+        int T = Integer.parseInt(br.readLine());
+        for (int t = 1; t <= T; t++) {
+            sb.append("#" + t + " ");
+            N = Integer.parseInt(br.readLine());
+            stairs = new Stair[2];
+            people = new ArrayList<>();
+            offStair1 = new ArrayList<>();
+            offStair2 = new ArrayList<>();
+            int sNum = 0;
+            for (int r = 0; r < N; r++) {
+                st = new StringTokenizer(br.readLine());
+                for (int c = 0; c < N; c++) {
+                    int tmp = Integer.parseInt(st.nextToken());
+                    if (tmp >= 2) {
+                        stairs[sNum] = new Stair(r, c, tmp);
+                        sNum++;
+                    } else if (tmp == 1) {
+                        people.add(new Person(r, c));
                     }
                 }
             }
-
-            int answer = Integer.MAX_VALUE;
-            // 모든 사람-계단 조합 탐색
-            for (int bit = 0; bit < (1 << people.size()); bit++) {
-                int time = calculateTime(people, stairs, bit);
-                answer = Math.min(answer, time);
-            }
-
-            System.out.println("#" + tc + " " + answer);
+            caseCheck = new boolean[people.size()];
+            min = Integer.MAX_VALUE;
+            cases(0);
+            sb.append(min).append("\n");
         }
-        sc.close();
+        System.out.println(sb.toString());
+
     }
 
-    // 각 조합별 최소 시간 계산 함수
-    static int calculateTime(List<Person> people, List<Stair> stairs, int bit) {
-        int[] timeToDescend = {0, 0}; // 계단별 내려가는데 걸리는 시간
-        int[] waiting = new int[people.size()]; // 대기 시간
-
-        for (int i = 0; i < people.size(); i++) {
-            Person p = people.get(i);
-//            Stair s = stairs.get(bit & (1 << i) ? 1 : 0);
-//            int distance = Math.abs(p.r - s.r) + Math.abs(p.c - s.c) + 1; // 계단 입구까지 이동 시간 + 1분 대기
-//            waiting[i] = distance;
+    private static void cases(int idx) {
+        if (idx == people.size()) {
+            setPeople();
+            min = Math.min(min, getTime());
+            return;
         }
+        caseCheck[idx] = true;
+        cases(idx + 1);
+        caseCheck[idx] = false;
+        cases(idx + 1);
+    }
 
-        // 계단별로 내려가는 사람 관리
-        int[] descending = {0, 0}; // 현재 계단에 있는 사람 수
+    private static int getTime() {
         int time = 0;
+        List<Person> onStair1 = new ArrayList<>();
+        List<Person> onStair2 = new ArrayList<>();
+        Collections.sort(offStair1);
+        Collections.sort(offStair2);
+
         while (true) {
-            // 계단별로 사람 내려보내기
-            for (int i = 0; i < 2; i++) {
-                if (descending[i] > 0) {
-                    timeToDescend[i]--;
-                    if (timeToDescend[i] == 0) {
-                        descending[i]--;
-                    }
-                }
-            }
-
-            // 대기 중인 사람 계단에 배치
-            for (int i = 0; i < people.size(); i++) {
-                if (waiting[i] <= time && (bit & (1 << i)) > 0 && descending[1] < 3) {
-                    descending[1]++;
-                    timeToDescend[1] = stairs.get(1).length;
-                    waiting[i] = Integer.MAX_VALUE; // 계단에 배치된 사람은 대기열에서 제거
-                } else if (waiting[i] <= time && (bit & (1 << i)) == 0 && descending[0] < 3) {
-                    descending[0]++;
-                    timeToDescend[0] = stairs.get(0).length;
-                    waiting[i] = Integer.MAX_VALUE; // 계단에 배치된 사람은 대기열에서 제거
-                }
-            }
-
-            // 모든 사람이 내려갔는지 확인
-            boolean allDescended = true;
-            for (int i : waiting) {
-                if (i != Integer.MAX_VALUE) {
-                    allDescended = false;
-                    break;
-                }
-            }
-            if (allDescended && descending[0] == 0 && descending[1] == 0) {
+            if (onStair1.isEmpty() && onStair2.isEmpty() && offStair1.isEmpty() && offStair2.isEmpty()) {
                 break;
             }
-
             time++;
+            for (int l = 0; l < onStair1.size(); l++) {
+                onStair1.get(l).time--;
+                if (onStair1.get(l).time == 0) {
+                    onStair1.remove(l);
+                    l--;
+                }
+            }
+            for (int l = 0; l < onStair2.size(); l++) {
+                onStair2.get(l).time--;
+                if (onStair2.get(l).time == 0) {
+                    onStair2.remove(l);
+                    l--;
+                }
+            }
+            for (int l = 0; l < offStair1.size(); l++) {
+                offStair1.get(l).time--;
+                if (offStair1.get(l).time < 0 && onStair1.size() < 3) {
+                    offStair1.get(l).time = stairs[0].time;
+                    onStair1.add(offStair1.get(l));
+                    offStair1.remove(l);
+                    l--;
+                }
+            }
+            for (int l = 0; l < offStair2.size(); l++) {
+                offStair2.get(l).time--;
+                if (offStair2.get(l).time < 0 && onStair2.size() < 3) {
+                    offStair2.get(l).time = stairs[1].time;
+                    onStair2.add(offStair2.get(l));
+                    offStair2.remove(l);
+                    l--;
+                }
+            }
         }
         return time;
+
     }
+
+    private static void setPeople() {
+        offStair1.clear();
+        offStair2.clear();
+        for (int i = 0; i < people.size(); i++) {
+            if (caseCheck[i] == true) {
+                people.get(i).time =
+                        Math.abs(people.get(i).row - stairs[0].row) + Math.abs(people.get(i).col - stairs[0].col);
+                offStair1.add(people.get(i));
+            } else {
+                people.get(i).time =
+                        Math.abs(people.get(i).row - stairs[1].row) + Math.abs(people.get(i).col - stairs[1].col);
+                offStair2.add(people.get(i));
+            }
+        }
+    }
+
 }
