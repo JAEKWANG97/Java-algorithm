@@ -1,4 +1,4 @@
-package swexpert;
+package swexpert.solvingClub;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -19,7 +19,7 @@ public class BlastFurnace {
         int minValue = Math.abs(n - m);
         for (int i = 0; i < k; i++) {
             arr[i] = Integer.parseInt(br.readLine());
-            if(arr[i] - m < minValue){
+            if (arr[i] - m < minValue) {
                 minValue = arr[i] - m + 1;
             }
         }

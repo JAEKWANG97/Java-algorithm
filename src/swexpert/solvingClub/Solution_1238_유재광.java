@@ -1,4 +1,4 @@
-package swexpert;
+package swexpert.solvingClub;
 
 import java.io.*;
 import java.util.*;

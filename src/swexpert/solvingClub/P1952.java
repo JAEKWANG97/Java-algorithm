@@ -1,4 +1,4 @@
-package swexpert;
+package swexpert.solvingClub;
 //1년 동안 각 달의 이용 계획을 수립하고 가장 적은 비용으로 수영장을 이용할 수 있는 방법
 
 /*
