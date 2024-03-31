@@ -3,14 +3,16 @@ package backjoon.backtracking;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.HashSet;
 
 public class BOJ_2239 {
     static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
     static int[][] board = new int[9][9];
+    static int[] dx = {0, 1, 0, -1};
+    static int[] dy = {-1, 0, 1, 0};
 
     public static void main(String[] args) throws IOException {
         init();
-        dfs(0);
     }
 
     private static void init() throws IOException {
@@ -22,55 +24,97 @@ public class BOJ_2239 {
         }
     }
 
-    private static void dfs(int depth) {
-        if (depth == 81) {
-            printBoard();
-            System.exit(0);
+    private static void dfs(int depth, int[][] map, int x, int y, boolean[][] visited) {
+        if (!confirm(map)) {
             return;
         }
 
-        int row = depth / 9;
-        int col = depth % 9;
-
-        if (board[row][col] != 0) {
-            dfs(depth + 1); // 이미 숫자가 있는 경우 다음 칸으로
+        if (depth == 81) {
             return;
-        } else {
-            for (int num = 1; num <= 9; num++) {
-                if (isValid(row, col, num)) {
-                    board[row][col] = num;
-                    dfs(depth + 1);
-                    board[row][col] = 0; // 백트래킹
+        }
+
+        if (map[x][y] != 0) {
+            for (int i = 0; i < 4; i++) {
+                int nx = x + dx[i];
+                int ny = y + dy[i];
+
+                if (nx < 0 || nx >= 9 || ny < 0 || ny >= 9 || visited[nx][ny]) {
+                    continue;
                 }
+
+                visited[nx][ny] = true;
+                dfs(depth, map, nx, ny, visited);
+                visited[nx][ny] = false;
+            }
+        } else {
+            //
+            for (int i = 0; i < 4; i++) {
+                int nx = x + dx[i];
+                int ny = y + dy[i];
+
+                if (nx < 0 || nx >= 9 || ny < 0 || ny >= 9 || visited[nx][ny]) {
+                    continue;
+                }
+
+                visited[nx][ny] = true;
+                dfs(depth, map, nx, ny, visited);
+                visited[nx][ny] = false;
             }
         }
+
     }
 
-    private static boolean isValid(int row, int col, int num) {
-        for (int i = 0; i < 9; i++) {
-            if (board[row][i] == num || board[i][col] == num) {
-                return false; // 같은 행 또는 열에 동일한 숫자가 있는지 확인
-            }
-        }
+    private static boolean confirm(int[][] map) {
+        return confirmSquare(map) && confirmCols(map) && confirmRows(map);
+    }
 
-        int startRow = (row / 3) * 3;
-        int startCol = (col / 3) * 3;
-        for (int i = 0; i < 3; i++) {
-            for (int j = 0; j < 3; j++) {
-                if (board[startRow + i][startCol + j] == num) {
-                    return false; // 3x3 박스 내에 동일한 숫자가 있는지 확인
+    private static boolean confirmSquare(int[][] map) {
+        for (int i = 0; i < 9; i += 3) {
+            for (int j = 0; j < 9; j += 3) {
+                HashSet<Integer> set = new HashSet<>(); // 유효성 체크
+                // i와 j가 시작 지점임
+                for (int k = i; k < i + 3; k++) {
+                    for (int k2 = j; k2 < j + 3; k2++) {
+                        if (set.contains(map[k][k2])) {
+                            return false;
+                        }
+                        if (map[k][k2] != 0) {
+                            set.add(map[k][k2]);
+                        }
+                    }
                 }
             }
         }
         return true;
     }
 
-    private static void printBoard() {
+    private static boolean confirmRows(int[][] map) {
         for (int i = 0; i < 9; i++) {
+            HashSet<Integer> set = new HashSet<>(); // 유효성 체크
             for (int j = 0; j < 9; j++) {
-                System.out.print(board[i][j]);
+                if (set.contains(map[i][j])) {
+                    return false;
+                }
+                if (map[i][j] != 0) {
+                    set.add(map[i][j]);
+                }
             }
-            System.out.println();
         }
+        return true;
+    }
+
+    private static boolean confirmCols(int[][] map) {
+        for (int i = 0; i < 9; i++) {
+            HashSet<Integer> set = new HashSet<>(); // 유효성 체크
+            for (int j = 0; j < 9; j++) {
+                if (set.contains(map[j][i])) {
+                    return false;
+                }
+                if (map[j][i] != 0) {
+                    set.add(map[j][i]);
+                }
+            }
+        }
+        return true;
     }
 }
