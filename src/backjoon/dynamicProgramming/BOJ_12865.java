@@ -34,19 +34,24 @@ public class BOJ_12865 {
     }
 
     private static void dp() {
-        int[][] dp = new int[N + 1][K + 1];
+        int[][] pack = new int[N + 1][K + 1];
 
-        for (int i = 1; i <= N; i++) {
+        for (int i = 0; i <= N; i++) {
+            // 배낭 용량을 점점 늘려가며 순회
             for (int j = 0; j <= K; j++) {
-                if (j < w[i - 1]) { // 물건을 담을 수 없는 경우
-                    dp[i][j] = dp[i - 1][j];
+                if (i == 0 || j == 0) {
+                    pack[i][j] = 0;
+                } else if (w[i - 1] <= j) {
+                    // 형재 짐 무게가 배낭 용량 이내인 경우 최대가격 계산
+                    //현재 짐 가격 + 이전 짐의 현재 짐 무게를 뺸 용량의 가격
+                    pack[i][j] = Math.max(v[i - 1] + pack[i - 1][j - w[i - 1]], pack[i - 1][j]);
+
                 } else {
-                    dp[i][j] = Math.max(dp[i - 1][j], dp[i - 1][j - w[i - 1]] + v[i - 1]);
+                    // 용량을 넘어선 경우 이전 짐의 가격을 그대로 이관
+                    pack[i][j] = pack[i - 1][j];
                 }
             }
         }
-
-        System.out.println(dp[N][K]);
+        System.out.println(pack[N][K]);
     }
-
 }
