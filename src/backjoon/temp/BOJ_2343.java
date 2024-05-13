@@ -1,4 +1,4 @@
-package backjoon;
+package backjoon.temp;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -71,13 +71,13 @@ public class BOJ_2343 {
         return count <= M;
     }
 }
-//블루레이에는 총 N개의 강의
+// 블루레이에는 총 N개의 강의
 // i와 j 사이의 모든 강의도 같은 블루레이에 녹화
 // 블루레이의 개수를 가급적 줄이기로함
 // M개의 블루레이에 모든 기타 강의 동영상을 녹화
 // M개의 블루레이는 모두 같은 크기
 
-// 9 3 //  N , M
+// 9 3 // N , M
 // 1 2 3 4 5 6 7 8 9
 
 // 첫째 줄에 가능한 블루레이 크기중 최소를 출력한다. 17

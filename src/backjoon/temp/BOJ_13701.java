@@ -1,4 +1,4 @@
-package backjoon;
+package backjoon.temp;
 
 import java.io.BufferedReader;
 import java.io.DataInputStream;
@@ -75,7 +75,6 @@ class FastInput {
         } while ((c = read()) >= '0' && c <= '9');
         return negative ? -ret : ret;
     }
-
 
     private static byte read() throws IOException {
         if (curIdx == maxIdx) {

@@ -3,6 +3,7 @@ package backjoon.PrefixSum;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Arrays;
 import java.util.StringTokenizer;
 
 public class BOJ_1806 {
@@ -30,20 +31,24 @@ public class BOJ_1806 {
     }
 
     private static void searchSize() {
-        int start = 0, end = 1;
-        int minSize = Integer.MAX_VALUE;
 
-        while (end <= N && start <= end) {
-            long sum = prefixSum[end] - (start == 0 ? 0 : prefixSum[start - 1]);
-
-            if (sum >= S) {
-                minSize = Math.min(minSize, end - start);
+        int start = 0;
+        int end = 0;
+        long currentSum = 0;
+        int minLength = N + 1;
+        while (end <= N) {
+            currentSum = prefixSum[end] - prefixSum[start];
+            if (currentSum >= S) {
+                minLength = Math.min(minLength, end - start);
                 start++;
             } else {
                 end++;
             }
         }
 
-        System.out.println(minSize == Integer.MAX_VALUE ? 0 : minSize + 1);
+        if (minLength == N + 1)
+            System.out.println(0);
+        else
+            System.out.println(minLength);
     }
 }

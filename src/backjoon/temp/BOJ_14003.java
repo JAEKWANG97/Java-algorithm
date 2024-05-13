@@ -1,4 +1,4 @@
-package backjoon;
+package backjoon.temp;
 
 import java.io.BufferedReader;
 import java.io.IOException;

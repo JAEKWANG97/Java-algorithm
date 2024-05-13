@@ -1,4 +1,4 @@
-package backjoon;
+package backjoon.temp;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -59,6 +59,5 @@ public class BOJ_14002 {
         List<Integer> result = lis(arr);
         System.out.println("가장 긴 증가하는 부분 수열: " + result);
     }
-
 
 }

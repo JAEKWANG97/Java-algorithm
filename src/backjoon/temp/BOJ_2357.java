@@ -1,4 +1,4 @@
-package backjoon;
+package backjoon.temp;
 
 public class BOJ_2357 {
     static int N;
