@@ -64,7 +64,7 @@ public class BOJ_2239 {
 
     }
 
-    private static boolean confirm(int[][] map) {
+    public static boolean confirm(int[][] map) {
         return confirmSquare(map) && confirmCols(map) && confirmRows(map);
     }
 
