@@ -30,10 +30,12 @@ public class BOJ_16946 {
 
         @Override
         public boolean equals(Object obj) {
-            if (this == obj)
+            if (this == obj) {
                 return true;
-            if (!(obj instanceof Location))
+            }
+            if (!(obj instanceof Location)) {
                 return false;
+            }
             Location other = (Location) obj;
             return row == other.row && col == other.col;
         }
@@ -45,8 +47,8 @@ public class BOJ_16946 {
     }
 
     private static int[][] map;
-    private static final int[] dx = { -1, 0, 1, 0 };
-    private static final int[] dy = { 0, 1, 0, -1 };
+    private static final int[] dx = {-1, 0, 1, 0};
+    private static final int[] dy = {0, 1, 0, -1};
     private static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
     private static int N, M;
     private static List<Location> zeroList = new ArrayList<>();
@@ -143,9 +145,10 @@ public class BOJ_16946 {
             }
         }
 
+        int finalCount = count;
         group.forEach(location -> {
             setMap.put(location, idx);
-            copyMap[location.row][location.col] = count;
+            copyMap[location.row][location.col] = finalCount;
         });
         idx++;
     }

@@ -19,7 +19,6 @@ public class SWEA_9843 {
         Scanner sc = new Scanner(System.in);
         N = sc.nextInt();
 
-        n * (n + 1) / 2 = n;
-        int result = n * n + n / 2;
+        
     }
 }

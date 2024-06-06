@@ -8,7 +8,7 @@ import java.util.Queue;
 import java.util.StringTokenizer;
 
 class Main_16933 {
-    static class Location implements Comparable<Location> {
+    static class Location {
         int r;
         int c;
         int time;
@@ -55,8 +55,8 @@ class Main_16933 {
         boolean[][][][] visited = new boolean[N][M][K + 1][2];
         queue.offer(new Location(0, 0, 1, 0, true));
         visited[0][0][0][1] = true;
-        int[] dr = { -1, 0, 1, 0 };
-        int[] dc = { 0, 1, 0, -1 };
+        int[] dr = {-1, 0, 1, 0};
+        int[] dc = {0, 1, 0, -1};
 
         while (!queue.isEmpty()) {
             Location cur = queue.poll();
@@ -73,8 +73,9 @@ class Main_16933 {
                 int nr = cur.r + dr[i];
                 int nc = cur.c + dc[i];
 
-                if (nr < 0 || nc < 0 || nr >= N || nc >= M || visited[nr][nc][cur.k][nextDayNightIndex])
+                if (nr < 0 || nc < 0 || nr >= N || nc >= M || visited[nr][nc][cur.k][nextDayNightIndex]) {
                     continue;
+                }
 
                 if (cur.day && map[nr][nc] == 1 && cur.k < K) {
                     visited[nr][nc][cur.k + 1][nextDayNightIndex] = true;
