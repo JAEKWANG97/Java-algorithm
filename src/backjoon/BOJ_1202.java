@@ -61,7 +61,6 @@ public class BOJ_1202 {
                 valueMaxHeap.add(items.get(j).value);
                 j++;
             }
-
             if (!valueMaxHeap.isEmpty()) {
                 totalValue += valueMaxHeap.poll();
             }
